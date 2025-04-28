@@ -17,22 +17,28 @@
     }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-900 font-sans">
-  <div id="app" class="max-w-4xl mx-auto p-4">
-    <header class="flex items-center space-x-4 mb-4">
-      <div id="logo" class="text-3xl font-bold text-[var(--primary-color)] flex items-center space-x-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M7 8l-4 4m0 0l4 4m-4-4h18" />
-          <!-- Placeholder for rabbit in speech bubble icon -->
-        </svg>
-        <span>RabChat</span>
-      </div>
-      <div id="user-profile" class="ml-auto flex items-center space-x-3">
-        <img id="user-profile-pic" src="" alt="Profile" class="h-10 w-10 rounded-full object-cover" />
-        <span id="user-profile-name" class="font-semibold"></span>
-        <button id="logout-btn" class="text-sm text-red-600 hover:underline">Logout</button>
-      </div>
-    </header>
+  <body class="bg-gray-100 text-gray-900 font-sans">
+    <div id="app" class="max-w-4xl mx-auto p-4">
+      <header class="flex items-center space-x-4 mb-4 justify-between">
+        <div class="flex flex-col items-start">
+          <a href="donate.html" id="donate-btn" class="inline-block bg-[var(--primary-color)] text-white px-4 py-2 rounded hover:bg-purple-700 mb-1">Donate</a>
+          <small class="text-gray-600 max-w-xs">
+            This app is completely free to use and does not steal any of your information, so kindly support us as we make social media more privacy-friendly!
+          </small>
+        </div>
+        <div id="logo" class="text-3xl font-bold text-[var(--primary-color)] flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 8l-4 4m0 0l4 4m-4-4h18" />
+            <!-- Placeholder for rabbit in speech bubble icon -->
+          </svg>
+          <span>RabChat</span>
+        </div>
+        <div id="user-profile" class="ml-auto flex items-center space-x-3">
+          <img id="user-profile-pic" src="" alt="Profile" class="h-10 w-10 rounded-full object-cover" />
+          <span id="user-profile-name" class="font-semibold"></span>
+          <button id="logout-btn" class="text-sm text-red-600 hover:underline">Logout</button>
+        </div>
+      </header>
 
     <main class="flex space-x-4">
       <section id="contacts-section" class="w-1/3 bg-white rounded-lg shadow p-4 flex flex-col">
