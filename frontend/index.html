@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Messaging App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    :root {
+      --primary-color: #d05fad; /* hopbush purple */
+    }
+    .priority-contact {
+      border: 2px solid red;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans">
+  <div id="app" class="max-w-4xl mx-auto p-4">
+    <header class="flex items-center space-x-4 mb-4">
+      <div id="logo" class="text-3xl font-bold text-[var(--primary-color)] flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7 8l-4 4m0 0l4 4m-4-4h18" />
+          <!-- Placeholder for rabbit in speech bubble icon -->
+        </svg>
+        <span>RabChat</span>
+      </div>
+      <div id="user-profile" class="ml-auto flex items-center space-x-3">
+        <img id="user-profile-pic" src="" alt="Profile" class="h-10 w-10 rounded-full object-cover" />
+        <span id="user-profile-name" class="font-semibold"></span>
+        <button id="logout-btn" class="text-sm text-red-600 hover:underline">Logout</button>
+      </div>
+    </header>
+
+    <main class="flex space-x-4">
+      <section id="contacts-section" class="w-1/3 bg-white rounded-lg shadow p-4 flex flex-col">
+        <input id="search-user" type="text" placeholder="Search users..." class="mb-3 p-2 border rounded" />
+        <div id="contacts-list" class="flex-1 overflow-y-auto space-y-2"></div>
+        <button id="new-group-btn" class="mt-3 bg-[var(--primary-color)] text-white py-2 rounded hover:bg-purple-700">New Group</button>
+      </section>
+
+      <section id="chat-section" class="w-2/3 bg-white rounded-lg shadow p-4 flex flex-col hidden">
+        <header id="chat-header" class="flex items-center space-x-4 border-b pb-2 mb-2">
+          <img id="chat-profile-pic" src="" alt="Chat" class="h-12 w-12 rounded-full object-cover" />
+          <div>
+            <h2 id="chat-name" class="font-bold text-lg"></h2>
+            <p id="chat-last-seen" class="text-sm text-gray-500"></p>
+          </div>
+          <button id="call-btn" class="ml-auto bg-[var(--primary-color)] text-white px-3 py-1 rounded hover:bg-purple-700">Call</button>
+          <button id="video-call-btn" class="ml-2 bg-[var(--primary-color)] text-white px-3 py-1 rounded hover:bg-purple-700">Video Call</button>
+        </header>
+        <div id="messages" class="flex-1 overflow-y-auto mb-2 space-y-2"></div>
+        <form id="message-form" class="flex space-x-2">
+          <input id="message-input" type="text" placeholder="Type a message..." class="flex-1 p-2 border rounded" autocomplete="off" />
+          <button type="submit" class="bg-[var(--primary-color)] text-white px-4 rounded hover:bg-purple-700">Send</button>
+        </form>
+      </section>
+
+    <section id="login-section" class="max-w-md mx-auto bg-white rounded-lg shadow p-6">
+      <div class="flex flex-col items-center space-y-4 mb-4">
+        <div id="logo" class="text-3xl font-bold text-[var(--primary-color)] flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 8l-4 4m0 0l4 4m-4-4h18" />
+            <!-- Placeholder for rabbit in speech bubble icon -->
+          </svg>
+          <span>RabChat</span>
+        </div>
+        <p class="text-lg font-semibold">Welcome to RabChat!</p>
+        <button id="login-button" class="w-full bg-[var(--primary-color)] text-white py-2 rounded hover:bg-purple-700">Login</button>
+      </div>
+      <form id="login-form" class="space-y-4 hidden">
+        <input id="login-username" type="text" placeholder="Username" required class="w-full p-2 border rounded" />
+        <input id="login-password" type="password" placeholder="Password" required class="w-full p-2 border rounded" />
+        <button type="submit" class="w-full bg-[var(--primary-color)] text-white py-2 rounded hover:bg-purple-700">Login</button>
+      </form>
+      <p class="mt-4 text-center text-gray-600">Don't have an account? <button id="show-register" class="text-[var(--primary-color)] hover:underline">Register</button></p>
+    </section>
+
+    <section id="register-section" class="max-w-md mx-auto bg-white rounded-lg shadow p-6 hidden">
+      <h1 class="text-2xl font-bold mb-4 text-center text-[var(--primary-color)]">Register for RabChat</h1>
+      <form id="register-form" class="space-y-4">
+        <input id="register-username" type="text" placeholder="Username" required class="w-full p-2 border rounded" />
+        <input id="register-password" type="password" placeholder="Password" required class="w-full p-2 border rounded" />
+        <input id="register-profile-name" type="text" placeholder="Profile Name" class="w-full p-2 border rounded" />
+        <input id="register-profile-pic" type="url" placeholder="Profile Picture URL" class="w-full p-2 border rounded" />
+        <button type="submit" class="w-full bg-[var(--primary-color)] text-white py-2 rounded hover:bg-purple-700">Register</button>
+      </form>
+      <p class="mt-4 text-center text-gray-600">Already have an account? <button id="show-login" class="text-[var(--primary-color)] hover:underline">Login</button></p>
+    </section>
+    </main>
+
+    <div id="call-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden">
+      <div class="bg-white rounded-lg p-4 w-96 max-w-full">
+        <h2 class="text-xl font-bold mb-2">Call</h2>
+        <video id="local-video" autoplay muted playsinline class="w-full rounded mb-2 bg-black"></video>
+        <video id="remote-video" autoplay playsinline class="w-full rounded bg-black"></video>
+        <button id="end-call-btn" class="mt-2 w-full bg-red-600 text-white py-2 rounded hover:bg-red-700">End Call</button>
+      </div>
+    </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
